@@ -117,7 +117,7 @@ uint8_t radio_send(Radio * radio, const uint8_t * content, size_t content_size)
 
 	if(receiver_powered) {
 		if(radio->received_bytes_count)
-			return RADIO_WAIT;
+			return 1;
 
 		radio->receiver_power(0);
 		radio->received_bytes_count = 0;
@@ -133,7 +133,7 @@ uint8_t radio_send(Radio * radio, const uint8_t * content, size_t content_size)
 	if(receiver_powered)
 		radio->receiver_power(1);
 
-	return RADIO_SUCCESS;
+	return 0;
 }
 
 static inline uint8_t tolerated(radio_time value, radio_time center,
@@ -163,7 +163,7 @@ uint8_t radio_resize_receiver_buffer(Radio * radio, size_t size)
 	uint8_t powered = radio->receiver_powered();
 
 	if(powered && radio->received_bytes_count)
-		return RADIO_WAIT;
+		return 1;
 
 	radio->receiver_power(0);
 	radio->received_bytes_count = 0;
@@ -176,11 +176,13 @@ uint8_t radio_resize_receiver_buffer(Radio * radio, size_t size)
 	radio->received_message = malloc(size);
 
 	if(!radio->received_message)
-		return RADIO_FAIL;
+		return 1;
 
 	radio->buffer_size = size;
 	reset_receiver(radio);
 	radio->receiver_power(powered);
+
+	return 0;
 }
 
 void radio_on_receive(Radio * radio)
