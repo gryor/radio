@@ -19,8 +19,8 @@ How to add a new platform
 
 Example
 ======
-Platform: Arduino Pro Micro
-Radio: cheap transmitter and receiver from ebay
+* Platform: Arduino Pro Micro
+* Radio: cheap transmitter and receiver from ebay
 
 This example will turn on and off a philips remote controlled power outlet.
 While in serial terminal press 1 to switch power on and 2 to switch power off.
