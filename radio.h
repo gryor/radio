@@ -12,8 +12,6 @@ extern "C" {
 #include "types.h"
 
 
-struct Radio;
-
 typedef struct Radio
 {
 	// status
