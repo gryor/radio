@@ -1,13 +1,9 @@
 #ifndef RADIO_ARDUINO_H_MOQQDS35
 #define RADIO_ARDUINO_H_MOQQDS35
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-
 #include "arduino.h"
 #include "radio.h"
+
 
 template<Radio *& radio, const int transmitter_power_pin, const int transmitter_data_pin, const int receiver_power_pin, const int receiver_data_pin>
 void radio_create_arduino()
@@ -28,8 +24,5 @@ void radio_create_arduino()
 	radio->microseconds = microseconds;
 }
 
-#ifdef __cplusplus
-}
-#endif
 
 #endif // end of include guard: RADIO_ARDUINO_H_MOQQDS35
