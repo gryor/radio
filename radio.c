@@ -84,15 +84,15 @@ static void radio_transmit_byte_repeat(Radio * radio, uint8_t byte,
 		radio_transmit_byte(radio, byte);
 }
 
+static void radio_transmit_sync(Radio * radio)
+{
+	radio_transmit_pulse(radio, 1, 31);
+}
+
 static inline void radio_transmit_preamble(Radio * radio)
 {
 	radio_transmit_byte_repeat(radio, 0xaa, 8);
 	radio_transmit_sync(radio);
-}
-
-static void radio_transmit_sync(Radio * radio)
-{
-	radio_transmit_pulse(radio, 1, 31);
 }
 
 static void radio_transmit_bytes(Radio * radio, uint8_t * bytes, size_t count)
