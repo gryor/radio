@@ -87,6 +87,7 @@ static void radio_transmit_byte_repeat(Radio * radio, uint8_t byte,
 static inline void radio_transmit_preamble(Radio * radio)
 {
 	radio_transmit_byte_repeat(radio, 0xaa, 8);
+	radio_transmit_sync(radio);
 }
 
 static void radio_transmit_sync(Radio * radio)
@@ -98,10 +99,8 @@ static void radio_transmit_bytes(Radio * radio, uint8_t * bytes, size_t count)
 {
 	int b, r;
 
-	if(radio->preamble) {
+	if(radio->preamble)
 		radio_transmit_preamble(radio);
-		radio_transmit_sync(radio);
-	}
 
 	for(r = 0; r <= radio->transmit_repeat; r++) {
 		for(b = 0; b < count; b++)
@@ -111,9 +110,10 @@ static void radio_transmit_bytes(Radio * radio, uint8_t * bytes, size_t count)
 	}
 }
 
-uint8_t radio_send(void * radio_pointer, const uint8_t * content, size_t content_size)
+uint8_t radio_send(void * radio_pointer, const uint8_t * content,
+                   size_t content_size)
 {
-	Radio * radio = (Radio*)radio_pointer;
+	Radio * radio = (Radio *)radio_pointer;
 	uint8_t receiver_powered = radio->receiver_powered();
 
 	if(receiver_powered) {
@@ -182,7 +182,6 @@ uint8_t radio_resize_receiver_buffer(Radio * radio, size_t size)
 	radio->buffer_size = size;
 	reset_receiver(radio);
 	radio->receiver_power(powered);
-
 	return 0;
 }
 
