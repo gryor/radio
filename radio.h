@@ -55,7 +55,7 @@ typedef struct Radio
 Radio * radio_create();
 void radio_free(Radio * radio);
 
-uint8_t radio_send(Radio * radio, const uint8_t * content, size_t content_size);
+uint8_t radio_send(void * radio, const uint8_t * content, size_t content_size);
 void radio_on_receive(Radio * radio);
 uint8_t radio_resize_receiver_buffer(Radio * radio, size_t size);
 

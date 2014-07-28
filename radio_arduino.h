@@ -16,7 +16,7 @@ void radio_create_arduino()
 	radio->transmitter_power =
 	    transmitter_power<transmitter_power_pin, transmitter_data_pin>;
 	radio->receiver_power =
-	    receiver_power<radio, receiver_power_pin, receiver_data_pin>;
+	    receiver_power<Radio, radio, receiver_power_pin, receiver_data_pin>;
 	radio->transmitter_powered = powered<transmitter_power_pin>;
 	radio->receiver_powered = powered<receiver_power_pin>;
 	radio->write = write<transmitter_data_pin>;

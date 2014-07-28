@@ -111,8 +111,9 @@ static void radio_transmit_bytes(Radio * radio, uint8_t * bytes, size_t count)
 	}
 }
 
-uint8_t radio_send(Radio * radio, const uint8_t * content, size_t content_size)
+uint8_t radio_send(void * radio_pointer, const uint8_t * content, size_t content_size)
 {
+	Radio * radio = (Radio*)radio_pointer;
 	uint8_t receiver_powered = radio->receiver_powered();
 
 	if(receiver_powered) {
