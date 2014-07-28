@@ -9,10 +9,10 @@ extern "C" {
 #include <stdlib.h>
 #include <stdint.h>
 
+#include "types.h"
+
 
 struct Radio;
-
-typedef uint32_t radio_time;
 
 typedef struct Radio
 {

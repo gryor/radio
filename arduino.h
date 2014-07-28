@@ -1,12 +1,10 @@
 #ifndef ARDUINO_H_NQZUPSUV
 #define ARDUINO_H_NQZUPSUV
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 
 #include <Arduino.h>
+
+#include "types.h"
 
 template<const int pin>
 void write(uint8_t high)
@@ -61,9 +59,5 @@ uint8_t powered()
 	return digitalRead(power_pin) == HIGH ? 1 : 0;
 }
 
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif // end of include guard: ARDUINO_H_NQZUPSUV
