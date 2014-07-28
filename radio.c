@@ -67,7 +67,6 @@ static void radio_transmit_byte(Radio * radio, uint8_t byte)
 	int i;
 
 	for(i = 7; i >= 0; i--) {
-		//if(byte & (1 << i))
 		if(bit_test(byte, i))
 			radio_transmit_pulse(radio, 3, 1);
 		else
