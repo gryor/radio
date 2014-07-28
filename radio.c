@@ -161,13 +161,14 @@ static inline uint8_t received_zero(Radio * radio, radio_time duration)
 
 uint8_t radio_resize_receiver_buffer(Radio * radio, size_t size)
 {
-	uint8_t powered = radio->receiver_powered();
+	uint8_t receiver_powered = radio->receiver_powered();
 
-	if(powered && radio->received_bytes_count)
+	if(receiver_powered && radio->received_bytes_count)
 		return 1;
 
 	radio->receiver_power(0);
 	radio->received_bytes_count = 0;
+	radio->buffer_size = 0;
 
 	if(radio->received_message) {
 		free(radio->received_message);
@@ -181,7 +182,10 @@ uint8_t radio_resize_receiver_buffer(Radio * radio, size_t size)
 
 	radio->buffer_size = size;
 	reset_receiver(radio);
-	radio->receiver_power(powered);
+
+	if(receiver_powered)
+		radio->receiver_power(1);
+
 	return 0;
 }
 
