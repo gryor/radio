@@ -202,6 +202,11 @@ void radio_on_receive(Radio * radio)
 		return;
 	}
 
+	if(duration < 300) {
+		reset_receiver(radio);
+		return;
+	}
+
 	if(!radio->receiving) {
 		radio->receiving = 1;
 		radio->delay = duration /* sync */ / 31;
