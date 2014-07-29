@@ -32,6 +32,7 @@ typedef struct Radio
 	size_t received_bytes_count;
 	size_t received_message_allocated_size;
 	size_t buffer_size;
+	size_t min_bytes_count;
 	uint8_t bit_count;
 	uint8_t change_count;
 

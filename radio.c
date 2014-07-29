@@ -14,6 +14,7 @@ Radio * radio_create()
 	radio->transmit_repeat = 1;
 	radio->tolerance = 60;
 	radio->buffer_size = 10;
+	radio->min_bytes_count = 3;
 	radio->received_message = malloc(radio->buffer_size);
 	return radio;
 }
@@ -26,15 +27,15 @@ void radio_free(Radio * radio)
 	free(radio);
 }
 
-static inline uint8_t valid_message(uint8_t * content, size_t content_size)
+static inline uint8_t valid_message(Radio * radio)
 {
 	int i;
 
-	if(!content_size || content_size == 1)
+	if(radio->received_bytes_count < radio->min_bytes_count)
 		return 0;
 
-	for(i = 0; i < content_size; i++) {
-		if(content[i])
+	for(i = 0; i < radio->received_bytes_count; i++) {
+		if(radio->received_message[i])
 			return 1;
 	}
 
@@ -43,8 +44,7 @@ static inline uint8_t valid_message(uint8_t * content, size_t content_size)
 
 static inline void reset_receiver(Radio * radio)
 {
-	if(radio->received_bytes_count
-	   && valid_message(radio->received_message, radio->received_bytes_count))
+	if(radio->received_bytes_count && valid_message(radio))
 		radio->callback_receive(radio, radio->received_message,
 		                        radio->received_bytes_count);
 
