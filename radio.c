@@ -202,47 +202,44 @@ void radio_on_receive(Radio * radio)
 		return;
 	}
 
-	if(!radio->receiving && radio->change_count) {
+	if(!radio->receiving) {
 		radio->receiving = 1;
-		radio->sync = duration;
-		radio->delay = radio->sync / 31;
+		radio->delay = duration /* sync */ / 31;
 		radio->delay_tolerance = radio->delay * radio->tolerance * 0.01;
 		radio->bit_count = 0;
 		radio->received_bytes_count = 0;
 	}
 
-	if(radio->receiving) {
-		if(between(duration, radio->delay, 3 * radio->delay, radio->delay_tolerance)) {
-			if(byte_even(radio->change_count)) {
-				if(radio->received_bytes_count >= radio->buffer_size) {
-					// Overflow
-					// Realloc on simple uc would result in memory fragmentation
-					// and freeze
-					radio->received_bytes_count = 0;
-					reset_receiver(radio);
-					return;
-				}
-
-				if(received_one(radio, duration))
-					bit_on(&radio->received_message[radio->received_bytes_count],
-					       7 - radio->bit_count++);
-				else if(received_zero(radio, duration))
-					bit_off(&radio->received_message[radio->received_bytes_count],
-					        7 - radio->bit_count++);
-				else {
-					reset_receiver(radio);
-					return;
-				}
-
-				if(radio->bit_count == 8) {
-					radio->bit_count = 0;
-					radio->received_bytes_count++;
-				}
+	if(between(duration, radio->delay, 3 * radio->delay, radio->delay_tolerance)) {
+		if(byte_odd(radio->change_count)) {
+			if(radio->received_bytes_count >= radio->buffer_size) {
+				// Overflow
+				// Realloc on simple uc would result in memory fragmentation
+				// and freeze
+				radio->received_bytes_count = 0;
+				reset_receiver(radio);
+				return;
 			}
-		} else if(radio->change_count > 1) {
-			reset_receiver(radio);
-			return;
+
+			if(received_one(radio, duration))
+				bit_on(&radio->received_message[radio->received_bytes_count],
+				       7 - radio->bit_count++);
+			else if(received_zero(radio, duration))
+				bit_off(&radio->received_message[radio->received_bytes_count],
+				        7 - radio->bit_count++);
+			else {
+				reset_receiver(radio);
+				return;
+			}
+
+			if(radio->bit_count == 8) {
+				radio->bit_count = 0;
+				radio->received_bytes_count++;
+			}
 		}
+	} else if(radio->change_count > 1) {
+		reset_receiver(radio);
+		return;
 	}
 
 	radio->change_count++;

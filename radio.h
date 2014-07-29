@@ -25,7 +25,6 @@ typedef struct Radio
 	uint8_t preamble;
 
 	// receivement
-	radio_time sync;
 	radio_time delay;
 	radio_time delay_tolerance;
 	radio_time last_time;
