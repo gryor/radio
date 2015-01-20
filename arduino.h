@@ -9,11 +9,6 @@
 template<const int pin>
 void write(uint8_t high)
 {
-	if (high)
-		TXLED1;
-	else
-		TXLED0;
-
 	digitalWrite(pin, high ? HIGH : LOW);
 }
 
